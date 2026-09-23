@@ -104,3 +104,9 @@ InitTestScene*.unity*
 
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
+Assets/__MACOSX/
+Assets/04_Images/Textures/
+Assets/05_Models/Player/
+Assets/Resources/Textures/
+Assets/Resources/Packages.meta
+Assets/Resources/Textures.meta
