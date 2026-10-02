@@ -11,8 +11,12 @@ public class FireController : MonoBehaviour
     // 유니티에서 InputSystem_Actions 하위에 Player/Action을 드래그 앤 드롭으로 연결
     [SerializeField] private InputActionReference _fireAction;
 
+    [SerializeField] private AudioClip _fireSFX;
+    private AudioSource _audio;
+    
     private MeshRenderer _muzzleFlash;
     private Light _fireLight;
+    
 
     private void Start()
     {
@@ -24,6 +28,8 @@ public class FireController : MonoBehaviour
             _fireLight =  _firePos.GetComponentInChildren<Light>();
             _fireLight.intensity = 0f;
         }
+        
+        _audio = GetComponent<AudioSource>();
     }
 
     private void OnEnable()
@@ -43,8 +49,10 @@ public class FireController : MonoBehaviour
         // Debug.Log("Fire");
         // Instantiate(생성할 객체, 좌표, 각도, [부모객체])
         Instantiate(_bulletPrefab, _firePos.position, _firePos.rotation);
-
         StartCoroutine(ShowMuzzleFlash());
+        
+        // 효과음 재생(사운드 조절 : 0.2f)
+        _audio.PlayOneShot(_fireSFX, 0.2f);
     }
 
     private IEnumerator ShowMuzzleFlash()

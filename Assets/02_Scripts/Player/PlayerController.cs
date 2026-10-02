@@ -41,12 +41,16 @@ public class PlayerController : MonoBehaviour
         _inputActions.Disable();
     }
 
-    void Start()
+    private void Start()
     {
         _animator = GetComponent<Animator>();
+        
+        // 마우스 락처리
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
-    void Update()
+    private void Update()
     {
         Movement();
         Rotation();
