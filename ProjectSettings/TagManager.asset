@@ -6,6 +6,8 @@ TagManager:
   tags:
   - BULLET
   - PLAYER
+  - PUNCH
+  - MONSTER
   layers:
   - Default
   - TransparentFX
@@ -15,9 +17,9 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
-  - 
+  - MONSTER_BODY
+  - MONSTER_PUNCH
+  - PLAYER
   - 
   - 
   - 

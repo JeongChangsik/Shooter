@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Animator))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : MonoBehaviour, IDamagable
 {
     // InputAction
     private InputSystem_Actions _inputActions;
@@ -13,11 +14,16 @@ public class PlayerController : MonoBehaviour
     private Vector3 _moveDir;
     [SerializeField] private float _moveSpeed = 6.0f; // 이동 속도
     [SerializeField] private float _turnSpeed = 50.0f; // 마우스 회전 속도
+
+    private float _maxHp = 100f;
+    private float _currHp = 100f;
     
     // Animator
     private Animator _animator;
     private static readonly int hashStrafe = Animator.StringToHash("Strafe");
     private static readonly int hashForward = Animator.StringToHash("Forward");
+
+    public static Action OnPlayerDie;
 
     #region 유니티 생명주기 
     private void Awake()
@@ -96,4 +102,38 @@ public class PlayerController : MonoBehaviour
     }
 
     #endregion
+
+    private void OnTriggerEnter(Collider coll)
+    {
+        if (coll.CompareTag("PUNCH"))
+        {
+            TakeDamage(coll.gameObject.GetComponentInParent<MonsterController>().Damage);
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        _currHp -= damage;
+        Debug.Log($"{damage}의 피해를 입었습니다. {_currHp}/{_maxHp}");
+        if (_currHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
+    {
+        Debug.Log("플레이어가 사망하였습니다.");
+        _currHp = 0;
+        GameManager.Instance.IsGameOver = true;
+        
+        // SendMessage 방식 -> 델리게이트로 변환
+        // GameObject[] monsters =  GameObject.FindGameObjectsWithTag("MONSTER");
+        // foreach (GameObject monster in monsters)
+        // {
+        //     monster.SendMessage("YouWin", SendMessageOptions.DontRequireReceiver);
+        // }
+        
+        OnPlayerDie.Invoke();
+    }
 }
