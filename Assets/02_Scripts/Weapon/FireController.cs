@@ -17,6 +17,7 @@ public class FireController : MonoBehaviour
     private MeshRenderer _muzzleFlash;
     private Light _fireLight;
     
+    [SerializeField] private LayerMask _hitLayer;
 
     private void Start()
     {
@@ -43,12 +44,25 @@ public class FireController : MonoBehaviour
         _fireAction.action.performed -= Fire;
         _fireAction.action.Disable();
     }
-    
+
+    private void Update()
+    {
+        Debug.DrawRay(_firePos.position, _firePos.forward * 10f, Color.green);
+    }
+
     private void Fire(InputAction.CallbackContext ctx)
     {
         // Debug.Log("Fire");
         // Instantiate(생성할 객체, 좌표, 각도, [부모객체])
-        Instantiate(_bulletPrefab, _firePos.position, _firePos.rotation);
+        // Instantiate(_bulletPrefab, _firePos.position, _firePos.rotation);
+        
+        // Raycast
+        if (Physics.Raycast(_firePos.position, _firePos.forward, out RaycastHit hit, 10f, _hitLayer))
+        {
+            // 광선에 무엇인가 충돌했을 경우
+            hit.collider.GetComponent<IDamagable>()?.TakeDamage(20f);
+        }
+        
         StartCoroutine(ShowMuzzleFlash());
         
         // 효과음 재생(사운드 조절 : 0.2f)

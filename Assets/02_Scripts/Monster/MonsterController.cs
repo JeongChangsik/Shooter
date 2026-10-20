@@ -38,7 +38,9 @@ public class MonsterController : MonoBehaviour, IDamagable
 
     private WaitForSeconds _stateCheckingTime = new WaitForSeconds(0.3f);
     
-    private void Start()
+    // private void Start()
+    // Start()에서 Awake()로 변경, 이유는 OnEnable은 Start 호출보다 먼저 호출됨 -> 그래서 Awake에서 찾는걸로 변경
+    private void Awake()
     {
         _mosterTr = transform;
         _playerTr = GameObject.FindGameObjectWithTag("PLAYER")?.transform;
@@ -46,13 +48,15 @@ public class MonsterController : MonoBehaviour, IDamagable
         _animator = GetComponent<Animator>();
         _collider = GetComponent<CapsuleCollider>();
         
-        StartCoroutine(CheckMonsterState());
-        StartCoroutine(MonsterAction());
     }
 
     private void OnEnable()
     {
         PlayerController.OnPlayerDie += YouWin;
+        
+        // Respawn 시 코루틴 재가동
+        StartCoroutine(CheckMonsterState());
+        StartCoroutine(MonsterAction());
     }
 
     private void OnDisable()
@@ -62,6 +66,7 @@ public class MonsterController : MonoBehaviour, IDamagable
 
     private IEnumerator CheckMonsterState()
     {
+        Debug.Log("CheckMonsterState");
         while (!IsDead)
         {
             if (_state == MonsterState.Die) yield break;
@@ -115,6 +120,8 @@ public class MonsterController : MonoBehaviour, IDamagable
                     IsDead = true;
                     _agent.isStopped = true;
                     _collider.enabled = false;
+                    GameManager.Instance.DisplayScore(50);
+                    Invoke(nameof(ReturnPool), 3f); // 3초 후 ReturnPool 함수 호출
                     break;
             }
             yield return _stateCheckingTime;
@@ -143,7 +150,6 @@ public class MonsterController : MonoBehaviour, IDamagable
     {
         if (coll.gameObject.CompareTag("BULLET"))
         {
-            TakeDamage(10f);
             Destroy(coll.gameObject);
         }
     }
@@ -156,5 +162,17 @@ public class MonsterController : MonoBehaviour, IDamagable
         // _agent.isStopped = true;
         _animator.SetFloat(hashSpeed, Random.Range(0.8f, 1.2f));
         _animator.SetTrigger(hashPlayerDie);
+    }
+
+    private void ReturnPool()
+    {
+        // 비활성화 처리
+        gameObject.SetActive(false);
+
+        // 속성 초기화
+        _hp = 100f;
+        _state = MonsterState.Idle;
+        _collider.enabled = true;
+        IsDead = false;
     }
 }

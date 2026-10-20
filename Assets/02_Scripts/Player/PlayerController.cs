@@ -114,7 +114,10 @@ public class PlayerController : MonoBehaviour, IDamagable
     public void TakeDamage(float damage)
     {
         _currHp -= damage;
+        GameManager.Instance.ChangeHp(_currHp, _maxHp);
+        
         Debug.Log($"{damage}의 피해를 입었습니다. {_currHp}/{_maxHp}");
+        
         if (_currHp <= 0)
         {
             Die();

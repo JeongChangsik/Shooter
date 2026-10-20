@@ -16,12 +16,12 @@ GameObject:
   - component: {fileID: 8858251555061207}
   - component: {fileID: 7644353438598353536}
   - component: {fileID: 2356257084026840998}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 16
   m_IsActive: 1
 --- !u!4 &1227267313838763629
 Transform:

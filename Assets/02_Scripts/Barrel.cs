@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Barrel : MonoBehaviour
+public class Barrel : MonoBehaviour, IDamagable
 {
     [SerializeField] private int _hitCount = 0;
     [SerializeField] private int _hitMaxCount = 3;
@@ -36,5 +36,10 @@ public class Barrel : MonoBehaviour
         Destroy(gameObject, 3f);
         // 5초후에 폭발 효과가 사라짐
         Destroy(explosionEffect, 5f);
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (++_hitCount >= _hitMaxCount) ExplosionBarrel();
     }
 }
