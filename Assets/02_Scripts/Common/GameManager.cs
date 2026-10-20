@@ -30,8 +30,9 @@ public class GameManager : Singleton<GameManager>
         
         // 점수 저장 기능
         // 로컬에 게임 데이터를 저장할 때 PlayerPrefs는 사용하지 않음 -> 변조 위험.
-        // 그래서 SQLite 같은 DB에 저장함. 하지만 이것도 좋은 방법은 아님.
-        // Cloud DB(AWS DynamoDB, EC2 MySQLs, MariaDB, PostgreSQL, Supabase DB(PostgreSQL))에 저장하는 방법이 있음.
+        // 1. 로컬에는 SQLite 같은 DB에 저장함. 하지만 이것도 좋은 방법은 아님.
+        // 2. Cloud DB(AWS DynamoDB, EC2 MySQLs, MariaDB, PostgreSQL, Supabase DB(PostgreSQL))에 저장하는 방법이 있음.
+        // 3. UGS(Unity Gaming Service)
         PlayerPrefs.SetInt(TOT_SCORE, _totScore);
     }
 
