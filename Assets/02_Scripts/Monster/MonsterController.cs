@@ -72,12 +72,12 @@ public class MonsterController : MonoBehaviour, IDamagable
             if (_state == MonsterState.Die) yield break;
             
             // 공격 사정거리 이내인 경우
-            if ((_mosterTr.position - _playerTr.position).sqrMagnitude <= _attackDist * _attackDist)
+            if ((_mosterTr.position - _playerTr.position).sqrMagnitude <= _attackDist * _attackDist && !IsDead)
             {
                 _state = MonsterState.Attack;
             }
             // 추적 사정거리 이내인 경우
-            else if ((_mosterTr.position - _playerTr.position).sqrMagnitude <= _traceDist * _traceDist)
+            else if ((_mosterTr.position - _playerTr.position).sqrMagnitude <= _traceDist * _traceDist && !IsDead)
             {
                 _state = MonsterState.Trace;
             }

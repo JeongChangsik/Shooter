@@ -54,7 +54,7 @@ public class FireController : MonoBehaviour
     {
         // Debug.Log("Fire");
         // Instantiate(생성할 객체, 좌표, 각도, [부모객체])
-        // Instantiate(_bulletPrefab, _firePos.position, _firePos.rotation);
+        Instantiate(_bulletPrefab, _firePos.position, _firePos.rotation);
         
         // Raycast
         if (Physics.Raycast(_firePos.position, _firePos.forward, out RaycastHit hit, 10f, _hitLayer))

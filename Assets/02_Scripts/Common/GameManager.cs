@@ -60,7 +60,7 @@ public class GameManager : Singleton<GameManager>
         // 1. transform 내 Find 함수를 사용
         // var spawnPointGroup = GameObject.Find("_STAGES/SpawnPointGroup").transform.Find("SpawnPointGroup");
         // 2. 한 번에 가져오기
-        var spawnPointGroup = GameObject.Find("_STAGES/SpawnPointGroup");
+        var spawnPointGroup = GameObject.Find("_STAGES/SpawnPointGroup").transform;
         spawnPointGroup.GetComponentsInChildren<Transform>(_spawnPoints);
     }
 
