@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Random = UnityEngine.Random;
@@ -27,6 +28,8 @@ public class MonsterController : MonoBehaviour, IDamagable
     private Animator _animator;
     private CapsuleCollider _collider;
 
+    private Collider[] _colliders; 
+
     private static readonly int hashIsTrace = Animator.StringToHash("IsTrace");
     private static readonly int hashIsAttack = Animator.StringToHash("IsAttack");
     private static readonly int hashHit = Animator.StringToHash("Hit");
@@ -47,7 +50,7 @@ public class MonsterController : MonoBehaviour, IDamagable
         _agent = GetComponent<NavMeshAgent>();
         _animator = GetComponent<Animator>();
         _collider = GetComponent<CapsuleCollider>();
-        
+        _colliders = GetComponentsInChildren<Collider>();
     }
 
     private void OnEnable()
@@ -72,12 +75,12 @@ public class MonsterController : MonoBehaviour, IDamagable
             if (_state == MonsterState.Die) yield break;
             
             // 공격 사정거리 이내인 경우
-            if ((_mosterTr.position - _playerTr.position).sqrMagnitude <= _attackDist * _attackDist && !IsDead)
+            if ((_mosterTr.position - _playerTr.position).sqrMagnitude <= _attackDist * _attackDist)
             {
                 _state = MonsterState.Attack;
             }
             // 추적 사정거리 이내인 경우
-            else if ((_mosterTr.position - _playerTr.position).sqrMagnitude <= _traceDist * _traceDist && !IsDead)
+            else if ((_mosterTr.position - _playerTr.position).sqrMagnitude <= _traceDist * _traceDist)
             {
                 _state = MonsterState.Trace;
             }
@@ -119,7 +122,8 @@ public class MonsterController : MonoBehaviour, IDamagable
                     // Debug.Log("MonsterState.Die");
                     IsDead = true;
                     _agent.isStopped = true;
-                    _collider.enabled = false;
+                    // _collider.enabled = false;
+                    foreach(var coll in _colliders) coll.enabled = false;
                     GameManager.Instance.DisplayScore(50);
                     Invoke(nameof(ReturnPool), 3f); // 3초 후 ReturnPool 함수 호출
                     break;
@@ -172,6 +176,7 @@ public class MonsterController : MonoBehaviour, IDamagable
         // 속성 초기화
         _hp = 100f;
         _state = MonsterState.Idle;
+        foreach(var coll in _colliders) coll.enabled = true;
         _collider.enabled = true;
         IsDead = false;
     }

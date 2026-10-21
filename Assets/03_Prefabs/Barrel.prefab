@@ -145,8 +145,12 @@ MonoBehaviour:
   _hitCount: 0
   _hitMaxCount: 3
   _power: 50
+  _explosionRadius: 5
   _explosionEffect: {fileID: 5112773291426190963, guid: ae86d5f129cef36439b349db3f7aa3db, type: 3}
   _explosionSFX: {fileID: 8300000, guid: c59b70e4dec5147a487fd2b4d5acbfc2, type: 3}
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 1280
 --- !u!82 &7644353438598353536
 AudioSource:
   m_ObjectHideFlags: 0
